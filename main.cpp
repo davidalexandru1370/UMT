@@ -260,7 +260,7 @@ int main() {
 }
 
 void testGetFreeIntervals(){
-
+    //Testing free intervals with example from the file
     vector<Interval> interval1{
             Interval{
                     Time{
@@ -371,6 +371,7 @@ void testGetFreeIntervals(){
 }
 
 void testWithNoBookedCalendar(){
+    //testing with two free calendars
     vector<Interval> interval1;
     vector<Interval> interval2;
 
@@ -399,6 +400,7 @@ void testWithNoBookedCalendar(){
 }
 
 void testWithOnlyOneCalendarBooked(){
+    //testing with only one booked calendar and the other free
     vector<Interval> interval1{
             Interval{
                     Time{
@@ -457,7 +459,10 @@ void testWithOnlyOneCalendarBooked(){
     assert(intervals[0] == answer1);
 }
 
+//tests for my function the check they are working correctly
+
 void testMaxOnTime(){
+    //test for getting max between two time classes
     Time t1{10,30};
     Time t2{10,40};
     Time answer = max(t2,t1);
@@ -465,6 +470,7 @@ void testMaxOnTime(){
 }
 
 void testMinOnTime(){
+    //test for getting min between two time classes
     Time t1{10,30};
     Time t2{10,40};
     Time answer = min(t2,t1);
@@ -472,6 +478,7 @@ void testMinOnTime(){
 }
 
 void testTimeDifference(){
+    //test for getting difference in minutes from two time classes
     Time t1{10,30};
     Time t2{10,40};
     int result = t1 - t2;
