@@ -90,9 +90,9 @@ public:
     Time finishingDayTime;
 
     Calendar(vector<Interval> notAvailableIn, Time startingDayTime, Time finishingDayTime):
-    notAvailableIn{notAvailableIn},
-    startingDayTime{startingDayTime},
-    finishingDayTime{finishingDayTime}
+            notAvailableIn{notAvailableIn},
+            startingDayTime{startingDayTime},
+            finishingDayTime{finishingDayTime}
     {
 
     }
@@ -103,7 +103,7 @@ public:
  * The formula transform into minutes and compare those two amount of times
  * Alternatively I could use an if-else approach (comparing hours, return greatest, otherwise compare minutes)
 */
- Time max(Time time1, Time time2){
+Time max(Time time1, Time time2){
     return (time1.hour * 60 + time1.minute) >= (time2.hour * 60 + time2.minute) ? time1 : time2;
 }
 
@@ -125,8 +125,8 @@ vector<Interval> getFreeIntervals(Calendar firstCalendar, Calendar secondCalenda
      *                                [[10:30,11:00], [10:45,12:00]] - wrong the first interval overlap with the other one
      * I merge all the intervals into one array, by their starting time, using merge sort algorithm having
      * an O(N+M) worst case complexity and O(N+M) space complexity, then merge the overlapping intervals
-     * into one single interval which contains the starting time the minimum and the ending time the maximum
-     * and store it into an array. Then we can extract the free time by comparing the first element of previous array
+     * into one single interval which contains the starting time the minimum overlap and the ending time the maximum
+     * overlap and store it into an array. Then we can extract the free time by comparing the first element of previous array
      * with the startingDayTime to check if there is a slot between the latest starting day time and the first busy time.
      * Then we compare the intervals with the previous one by checking the previous interval end time with current
      * interval starting time and check if that gap is greater than minimumFreeTime. At the final we also check
@@ -150,7 +150,7 @@ vector<Interval> getFreeIntervals(Calendar firstCalendar, Calendar secondCalenda
      * We merge the intervals by their starting time using the merge sort algorithm between two arrays(of Intervals)
      * */
     while(firstIntervalIndex < firstCalendar.notAvailableIn.size() &&
-    secondIntervalIndex < secondCalendar.notAvailableIn.size()){
+          secondIntervalIndex < secondCalendar.notAvailableIn.size()){
         if(firstCalendar.notAvailableIn[firstIntervalIndex].start < secondCalendar.notAvailableIn[secondIntervalIndex].start){
             allIntervals.push_back(firstCalendar.notAvailableIn[firstIntervalIndex]);
             firstIntervalIndex++;
@@ -188,7 +188,7 @@ vector<Interval> getFreeIntervals(Calendar firstCalendar, Calendar secondCalenda
             return freeIntervals;
         }
         freeIntervals.push_back(Interval{
-            startingTime,finishingTime
+                startingTime,finishingTime
         });
         return freeIntervals;
     }
@@ -200,31 +200,31 @@ vector<Interval> getFreeIntervals(Calendar firstCalendar, Calendar secondCalenda
      * free time
      * */
     for (int index = 1; index < allIntervals.size(); ++index) {
-            Interval lastInterval = mergedIntervals[mergedIntervals.size() - 1];
-            if(lastInterval.stop  >= allIntervals[index].start){
-                lastInterval.start  = min(lastInterval.start,allIntervals[index].start);
-                lastInterval.stop = max(lastInterval.stop,allIntervals[index].stop);
-                mergedIntervals[mergedIntervals.size() - 1] = lastInterval;
-            }
-            else{
-                mergedIntervals.push_back(allIntervals[index]);
-            }
+        Interval lastInterval = mergedIntervals[mergedIntervals.size() - 1];
+        if(lastInterval.stop  >= allIntervals[index].start){
+            lastInterval.start  = min(lastInterval.start,allIntervals[index].start);
+            lastInterval.stop = max(lastInterval.stop,allIntervals[index].stop);
+            mergedIntervals[mergedIntervals.size() - 1] = lastInterval;
+        }
+        else{
+            mergedIntervals.push_back(allIntervals[index]);
+        }
     }
 
-        /*
-         * We compute the gaps between latest starting day time, between each interval and the finishing day time
-         * and check if the gap is greater or equal to the minimum free time and save that interval is it respect
-         * the condition by saving the previous interval finishing time and current interval starting time.
-         * */
+    /*
+     * We compute the gaps between latest starting day time, between each interval and the finishing day time
+     * and check if the gap is greater or equal to the minimum free time and save that interval is it respect
+     * the condition by saving the previous interval finishing time and current interval starting time.
+     * */
     for (int index = 0; index < mergedIntervals.size(); ++index) {
         //check for day start time and first busy interval
         if(index == 0 &&
-         startingTime < mergedIntervals[index].start &&
-         startingTime - mergedIntervals[index].start >= minimumFreeTime){
-                freeIntervals.emplace_back(
+           startingTime < mergedIntervals[index].start &&
+           startingTime - mergedIntervals[index].start >= minimumFreeTime){
+            freeIntervals.emplace_back(
                     startingTime,
                     mergedIntervals[index].start
-                );
+            );
         }
 
         //check for current interval and previous interval
@@ -235,8 +235,8 @@ vector<Interval> getFreeIntervals(Calendar firstCalendar, Calendar secondCalenda
 
         //check for last interval and day finish time
         if(index == mergedIntervals.size() - 1 &&
-        mergedIntervals[index].stop < finishingTime &&
-        (finishingTime - mergedIntervals[index].stop) >= minimumFreeTime){
+           mergedIntervals[index].stop < finishingTime &&
+           (finishingTime - mergedIntervals[index].stop) >= minimumFreeTime){
             freeIntervals.emplace_back(
                     mergedIntervals[index].stop,
                     finishingTime
@@ -261,32 +261,32 @@ int main() {
 
 void testGetFreeIntervals(){
 
-   vector<Interval> interval1{
-       Interval{
-           Time{
-               9,0
-           },
-           Time{
-               10,30
-           }
-       },
-       Interval{
-               Time{
-                       12,0
-               },
-               Time{
-                       13,0
-               }
-       },
-       Interval{
-               Time{
-                       16,0
-               },
-               Time{
-                       18,0
-               }
-       },
-   };
+    vector<Interval> interval1{
+            Interval{
+                    Time{
+                            9,0
+                    },
+                    Time{
+                            10,30
+                    }
+            },
+            Interval{
+                    Time{
+                            12,0
+                    },
+                    Time{
+                            13,0
+                    }
+            },
+            Interval{
+                    Time{
+                            16,0
+                    },
+                    Time{
+                            18,0
+                    }
+            },
+    };
 
     vector<Interval> interval2{
             Interval{
@@ -333,28 +333,28 @@ void testGetFreeIntervals(){
     }
 
     Interval answer1 {
-        Time{
-            11,30
-        },
-        Time{12,0}
+            Time{
+                    11,30
+            },
+            Time{12,0}
     };
 
     Interval answer2 {
-        Time{
-            15,0
-        },
-        Time{
-            16,0
-        }
+            Time{
+                    15,0
+            },
+            Time{
+                    16,0
+            }
     };
 
     Interval answer3{
-        Time{
-            18,0
-        },
-        Time{
-            18,30
-        }
+            Time{
+                    18,0
+            },
+            Time{
+                    18,30
+            }
     };
 
     assert(intervals[0] == answer1);
@@ -385,12 +385,12 @@ void testWithNoBookedCalendar(){
     }
 
     Interval answer {
-        Time{
-            9,0
-        },
-        Time{
-            17,25
-        }
+            Time{
+                    9,0
+            },
+            Time{
+                    17,25
+            }
     };
 
     assert(intervals.size() == 1);
@@ -426,6 +426,7 @@ void testWithOnlyOneCalendarBooked(){
             },
     };
 
+    //empty second calendar
     vector<Interval> interval2;
 
     Calendar calendar1{interval1, Time{7,30},Time{16,30}};
